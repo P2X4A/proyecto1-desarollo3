@@ -1,0 +1,82 @@
+<div class="ml-list-page py-5">
+  <div class="container ml-list-container bg-white p-4 p-md-5 rounded shadow-sm animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="fw-bold text-dark m-0"><i class="fa-solid fa-boxes-stacked text-primary me-2"></i>Mis publicaciones <span class="badge bg-primary ms-1">{{ productos.length }}</span></h2>
+      <button class="btn btn-primary ml-btn-primary fw-bold" routerLink="/crear-producto"><i class="fa-solid fa-plus me-1"></i>Publicar nuevo</button>
+    </div>
+
+    <!-- Search/Filter bar -->
+    <div class="d-flex gap-3 mb-4">
+      <div class="input-group">
+        <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+        <input type="text" class="form-control" placeholder="Buscar en mis publicaciones...">
+      </div>
+      <select class="form-select w-auto">
+        <option value="" selected>Todas las categorías</option>
+        <option value="Tecnología">Tecnología</option>
+      </select>
+    </div>
+
+    <div *ngIf="cargando" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3 text-muted">Cargando tus publicaciones...</p>
+    </div>
+
+    <div *ngIf="error && !cargando" class="alert alert-warning">
+      <i class="fa-solid fa-triangle-exclamation me-2"></i>{{ error }}
+      <button class="btn btn-sm btn-outline-secondary ms-3" (click)="store.loadAll(true)">
+        <i class="fa-solid fa-rotate-right me-1"></i>Reintentar
+      </button>
+    </div>
+
+    <div class="table-responsive" *ngIf="!cargando && productos.length > 0">
+      <table class="table table-hover align-middle">
+        <thead class="table-light text-muted">
+          <tr>
+            <th scope="col" style="width: 50px;"><i class="fa-solid fa-hashtag fa-xs me-1"></i>ID</th>
+            <th scope="col"><i class="fa-solid fa-heading fa-xs me-1"></i>Título</th>
+            <th scope="col"><i class="fa-solid fa-tag fa-xs me-1"></i>Precio</th>
+            <th scope="col"><i class="fa-solid fa-folder fa-xs me-1"></i>Categoría</th>
+            <th scope="col"><i class="fa-solid fa-circle-check fa-xs me-1"></i>Estado</th>
+            <th scope="col" class="text-end"><i class="fa-solid fa-gear fa-xs me-1"></i>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prod of productos">
+            <td class="text-muted">#{{ prod.id }}</td>
+            <td class="fw-semibold text-dark">{{ prod.title }}</td>
+            <td>{{ prod.price | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            <td class="text-muted">{{ prod.category }}</td>
+            <td>
+              <span class="badge" [ngClass]="prod.source === 'local' ? 'bg-info text-dark' : 'bg-success'">
+                {{ prod.source === 'local' ? 'Mi publicación' : 'Catálogo' }}
+              </span>
+            </td>
+            <td class="text-end">
+              <div class="dropdown">
+                <button class="btn btn-sm btn-light rounded-circle ml-action-btn" type="button" data-bs-toggle="dropdown">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                  <li><button class="dropdown-item py-2" (click)="agregarAlCarrito(prod.id)"><i class="fa-solid fa-cart-plus me-2 text-primary"></i>Agregar al carrito</button></li>
+                  <li><a class="dropdown-item py-2" [routerLink]="['/actualizar-producto', prod.id]"><i class="fa-solid fa-pen me-2 text-muted"></i>Modificar</a></li>
+                  <li><a class="dropdown-item py-2 text-danger" [routerLink]="['/eliminar-producto', prod.id]"><i class="fa-solid fa-trash me-2"></i>Eliminar</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!cargando && productos.length === 0" class="text-center py-5 text-muted">
+      <i class="fa-solid fa-box-open fa-4x mb-3 text-light"></i>
+      <h5>Aún no tienes publicaciones</h5>
+      <p>Empieza a vender tus productos ahora mismo.</p>
+      <button class="btn btn-primary mt-2" routerLink="/crear-producto"><i class="fa-solid fa-plus me-1"></i>Publicar mi primer producto</button>
+    </div>
+
+  </div>
+</div>
