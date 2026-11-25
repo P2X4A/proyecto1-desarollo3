@@ -11,6 +11,11 @@ export class OmdbService {
   private readonly URL_BASE: string = environment.omdbBaseUrl;
   private readonly API_KEY: string = environment.omdbApiKey;
 
+  /** Indica si hay una clave de OMDb configurada en environment.ts. */
+  tieneClave(): boolean {
+    return this.API_KEY.trim() !== '';
+  }
+
   searchMovies(query: string): Observable<OmdbSearchResponse> {
     const params = new HttpParams()
       .set('apikey', this.API_KEY)
