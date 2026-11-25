@@ -1,83 +1,99 @@
-# Clon de Mercado Libre Colombia 🇨🇴
+# Clon de Mercado Libre Colombia
 
-Réplica educativa de la página de inicio de **Mercado Libre Colombia**, desarrollada con **Angular 22** (proyecto no-standalone, con `AppModule`). Incluye navbar y footer fieles al diseño original, catálogo de productos, categorías, sección de streaming y carrito de compras funcional.
+Réplica educativa de la tienda de **Mercado Libre Colombia** hecha con **Angular 22** (proyecto con `NgModule`, sin *standalone*). Tiene catálogo de productos traído de una API, búsqueda, categorías, carrito con checkout, historial de compras, un CRUD de publicaciones y una sección de películas tipo *Mercado Play*.
 
-## ✨ Funcionalidades
+Proyecto en equipo del curso Desarrollo de Sistemas de Información 3, Ingeniería de Sistemas, Universidad El Bosque.
 
-- **Navbar estilo ML Colombia**: logo, buscador funcional (navega a `/buscar?q=`), ubicación, categorías reales, Ofertas, Cupones, Supermercado, Moda, Mercado Play, Vender, Mis compras y Ayuda.
-- **Contenido principal**: carrusel de banners, atajo a Mercado Play, categorías destacadas, ofertas del día y productos más buscados.
-- **Búsqueda** (`/buscar`): filtra el catálogo por título, categoría y descripción, sin distinguir mayúsculas ni tildes. El término viaja en la URL, así que el enlace se puede compartir.
-- **Categorías** (`/categoria`, `/categoria/:nombre`): grilla de categorías y listado de los productos de cada una.
-- **Carrito de compras** (`/carrito`): agregar/quitar productos, cantidades, resumen con envío, checkout con formulario y confirmación de pedido. Persiste en `localStorage` y el badge del navbar se actualiza en vivo.
-- **Mis compras** (`/mis-compras`): historial de los pedidos confirmados.
-- **Mercado Play** (`/mercado-play`): catálogo de 12 películas con datos de la API de OMDb (póster, sinopsis, rating, reparto) y reproductor de trailers de YouTube embebido.
-- **CRUD de productos**: crear, listar, actualizar y eliminar publicaciones. Como Fake Store API acepta los cambios pero no los guarda entre recargas, `ProductStoreService` los conserva en `localStorage` y los combina con el catálogo de la API.
-- **Footer estilo ML Colombia**: beneficios, métodos de pago (Visa, Mastercard, PSE, Efecty, Nequi…), links de ayuda/PQR, redes oficiales y aviso legal.
+> Proyecto con fines académicos. No está afiliado a MercadoLibre, Inc.; el logo y la marca pertenecen a sus dueños. No procesa pagos: el pedido se guarda solo en el navegador.
 
-## 🛠️ Tecnologías
+![Página de inicio con el carrusel de ofertas y las categorías](docs/inicio.png)
+
+| Categorías | CRUD de publicaciones |
+| --- | --- |
+| ![Grilla de categorías](docs/categorias.png) | ![Tabla de publicaciones con búsqueda y filtro](docs/crud.png) |
+
+## Funcionalidades
+
+- **Navbar al estilo de Mercado Libre Colombia**: logo, buscador, ubicación, menú de categorías, accesos a ofertas, Mercado Play y carrito con contador en vivo.
+- **Inicio**: carrusel de banners, acceso a Mercado Play, categorías destacadas, ofertas del día y productos más buscados.
+- **Búsqueda** (`/buscar?q=`): filtra el catálogo por título, categoría y descripción sin distinguir mayúsculas ni tildes. El término va en la URL, así que el enlace se puede compartir.
+- **Categorías** (`/categoria`, `/categoria/:nombre`): grilla de categorías y productos de cada una.
+- **Carrito** (`/carrito`): agregar y quitar productos, cambiar cantidades, resumen con envío, formulario de checkout y confirmación del pedido.
+- **Mis compras** (`/mis-compras`): historial de pedidos confirmados.
+- **CRUD de publicaciones** (`/listar-producto` y relacionadas): crear, listar, editar y eliminar productos, con búsqueda y filtro por categoría. Fake Store API acepta los cambios pero no los guarda, así que `ProductStoreService` los conserva en `localStorage` y los mezcla con el catálogo de la API.
+- **Mercado Play** (`/mercado-play`): 12 películas con datos de OMDb (póster, sinopsis, calificación y reparto) y su tráiler de YouTube.
+- **Footer** con beneficios, medios de pago, enlaces de ayuda y aviso legal.
+
+## Tecnologías
 
 | Tecnología | Uso |
 | --- | --- |
-| **Angular 22** + Angular CLI 22 | Framework principal (módulos, routing, `HttpClient`, `FormsModule`) |
-| TypeScript + RxJS | Lógica y consumo de APIs con observables |
-| Bootstrap 5.3 | Layout y componentes (vía CDN) |
-| Font Awesome 6 | Iconografía (vía CDN) |
-| Animate.css 4 | Animaciones de entrada (vía CDN) |
-| Fake Store API | Catálogo de productos (`https://fakestoreapi.com`) |
-| OMDb API | Fichas de películas de Mercado Play (`https://www.omdbapi.com`) |
-| YouTube (embed) | Reproductor de trailers en Mercado Play |
-| `localStorage` | Persistencia del carrito, el historial de pedidos y los cambios del CRUD |
+| Angular 22 y Angular CLI | Módulos, rutas, `HttpClient` y formularios con `FormsModule` |
+| TypeScript 6 y RxJS | Lógica y consumo de las APIs con observables |
+| Bootstrap 5.3, Font Awesome 6 y Animate.css (por CDN) | Maquetación, iconos y animaciones |
+| [Fake Store API](https://fakestoreapi.com) | Catálogo de productos |
+| [OMDb API](https://www.omdbapi.com) | Fichas de las películas de Mercado Play |
+| `localStorage` | Carrito, historial de pedidos y cambios del CRUD |
 
-## 📁 Estructura
+## Requisitos
+
+- Node.js 22.22.3 o superior, o 24.15 o superior (probado con Node 24)
+- npm 10 o superior
+- Conexión a internet, por las APIs y los CDN
+- Una clave gratuita de OMDb, solo si quieres ver Mercado Play
+
+## Instalación y ejecución
+
+```bash
+git clone https://github.com/P2X4A/proyecto1-desarollo3.git
+cd proyecto1-desarollo3
+npm ci
+npm start
+```
+
+Abre `http://localhost:4200/`.
+
+### Clave de OMDb (opcional)
+
+El repositorio no incluye ninguna clave. Para que Mercado Play cargue las películas:
+
+1. Pide una clave gratuita en <https://www.omdbapi.com/apikey.aspx>.
+2. Escríbela en `src/app/environments/environment.ts`, en `omdbApiKey`.
+3. No la subas a Git; deja el campo vacío antes de hacer commit.
+
+Sin clave, el resto de la tienda funciona y Mercado Play muestra un aviso.
+
+### Build de producción
+
+```bash
+npm run build
+```
+
+Los archivos quedan en `dist/proyectoDesarollo/browser`.
+
+## Estructura
 
 ```text
-public/mercado_free.ico         # Favicon
-src/
-├── index.html                  # CDN: Bootstrap, Font Awesome, Animate.css
-├── styles.css                  # Estilos globales
-└── app/
-    ├── environments/           # URLs base y API keys (OMDb, FakeStore)
-    ├── models/                 # Interfaces del carrito (producto, item, pedido)
-    ├── services/
-    │   ├── cart.service.ts     # Carrito + checkout (localStorage)
-    │   ├── fake-store/         # Cliente HTTP de Fake Store API
-    │   ├── omdb/               # Cliente HTTP de OMDb
-    │   ├── product-store/      # Catálogo: API + cambios locales, y filtros
-    │   └── storage/            # Acceso tipado a localStorage
-    └── components/
-        ├── navbarcomponent/    # Barra superior (2 filas amarilla/blanca)
-        ├── contenidocomponent/ # Home: banners, ofertas, búsquedas
-        ├── buscarcomponent/    # Resultados de /buscar?q=
-        ├── categoriascomponent/# Grilla de categorías y productos por categoría
-        ├── mercadoplaycomponent/
-        ├── crear/listar/actualizar/eliminar-productocomponent/
-        ├── carritocomponent/
-        ├── miscomprascomponent/# Historial de pedidos
-        └── footercomponent/    # 5 bloques estilo ML Colombia
+src/app/
+├── environments/        # URLs base y clave de OMDb (vacía en el repositorio)
+├── models/              # Producto, ítem del carrito y pedido
+├── services/
+│   ├── cart.service.ts  # Carrito y checkout (localStorage)
+│   ├── fake-store/      # Cliente HTTP de Fake Store API
+│   ├── omdb/            # Cliente HTTP de OMDb
+│   ├── product-store/   # Catálogo: API + cambios locales y filtros
+│   └── storage/         # Acceso tipado a localStorage
+└── components/
+    ├── navbarcomponent/     contenidocomponent/   buscarcomponent/
+    ├── categoriascomponent/ mercadoplaycomponent/ carritocomponent/
+    ├── miscomprascomponent/ footercomponent/
+    └── crear-, listar-, actualizar- y eliminarproductocomponent/
 ```
 
-## 🚀 Desarrollo
+## Equipo
 
-```bash
-npm install
-npx ng serve
-```
+El desarrollo se hizo en un repositorio anterior del equipo; aquí está la versión final.
 
-Abre `http://localhost:4200/`. La app se recarga sola al editar archivos.
-
-## 📦 Build
-
-```bash
-npx ng build
-```
-
-Los artefactos quedan en `dist/`.
-
-## 👥 Ramas
-
-- `master` — rama principal, con todo el trabajo integrado.
-- `ramaHTMLComponents` — maquetación, estilos y conexión de APIs.
-- `DanielAya_CarritoCompra` — carrito de compras (ya integrado).
-
----
-Proyecto con fines académicos. No afiliado a MercadoLibre, Inc.
+- **Sergio Parra** ([P2X4A](https://github.com/P2X4A)): estructura del proyecto, componentes y rutas, maquetación y estilos, consumo de Fake Store API y OMDb, integración del carrito, CRUD con almacenamiento local, buscador, categorías y Mercado Play.
+- **[boognuel](https://github.com/boognuel)**: filtro de productos del buscador, creación de productos, ajustes del CRUD y tráileres de YouTube en Mercado Play.
+- **Daniel Aya**: componente del carrito de compras.
