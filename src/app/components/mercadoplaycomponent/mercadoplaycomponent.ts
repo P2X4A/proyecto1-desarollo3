@@ -47,6 +47,14 @@ export class Mercadoplaycomponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Sin clave, OMDb responde 401 y el error parecería un problema de conexión.
+    if (!this.omdbService.tieneClave()) {
+      this.isLoading = false;
+      this.mensajeError =
+        'Falta la clave de OMDb: agrégala en src/app/environments/environment.ts (ver README).';
+      return;
+    }
+
     CATALOGO.forEach((item) => {
       this.omdbService.getMovieByTitle(item.titulo).subscribe({
         next: (detalle: OmdbMovieDetail) => {
